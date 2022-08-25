@@ -1,0 +1,22 @@
+---
+- name: "Create ansible general user (Linux)"
+  ansible.builtin.user:
+    name: ansible
+    state: present
+    comment: "Ansible Automation User"
+    shell: /bin/bash
+    password: "$6$arup$IZJm5efVba7BbrqIEy4OdfqDg6kCJjApAQ99tp1rTz3my/Rj5/EOJo2KC2GAPN9QPb4aGuYnKBlEl3BpC5c.B0"
+
+- name: "Set authorized key for ansible user"
+  ansible.posix.authorized_key:
+    user: ansible
+    state: present
+    key: "{{ lookup('file', 'file/id_ansible_user.pub') }}"
+
+- name: "Create sudo rules for ansible user"
+  ansible.builtin.file:
+    src: files/99-ansible
+    dest: /etc/sudoers.d/99-ansible
+    mode: 0400
+    owner: root
+    group: root
