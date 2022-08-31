@@ -4,4 +4,4 @@
   become_user: root
   become_method: sudo
   roles:
-    ansible-tower-user
+    - ansible-tower-user
